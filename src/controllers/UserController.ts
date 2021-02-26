@@ -8,6 +8,7 @@ class UserController {
 
     const usersRepository = getRepository(User);
 
+    // select * from users where email = 'email';
     const userAlreadExists = await usersRepository.findOne({
       email
     });
