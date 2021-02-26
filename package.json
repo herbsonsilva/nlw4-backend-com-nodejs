@@ -1,0 +1,11 @@
+{
+  "name": "nlw4-backend-com-nodejs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Herbson Silva <herbsonsilvajp@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "ts-node-dev": "^1.1.6",
+    "typescript": "^4.2.2"
+  }
+}
