@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
-import { User } from '../models/User';
+import { getCustomRepository } from 'typeorm';
+import { UsersRepository } from '../repositories/UsersRepository';
 
 class UserController {
+
   async create(request: Request, response: Response) {
     const { name, email } = request.body;
 
-    const usersRepository = getRepository(User);
+    const usersRepository = getCustomRepository(UsersRepository);
 
     // select * from users where email = 'email';
     const userAlreadExists = await usersRepository.findOne({
@@ -24,10 +25,11 @@ class UserController {
       email
     });
 
-    await usersRepository.save(user); 
-    
-    response.json(user);
+    await usersRepository.save(user);
+
+    response.status(201).json(user);
   };
+
 };
 
 export { UserController };
