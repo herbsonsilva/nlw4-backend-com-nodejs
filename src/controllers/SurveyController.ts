@@ -4,7 +4,7 @@ import { SurveysRepository } from "../repositories/SurveysRepository";
 
 class SurveyController {
 
-  async list(request: Request, response: Response) {
+  async listAll(request: Request, response: Response) {
 
     const surveysRespository = getCustomRepository(SurveysRepository);
 

@@ -4,7 +4,7 @@ import { UsersRepository } from '../repositories/UsersRepository';
 
 class UserController {
 
-  async list(request: Request, response: Response) {
+  async listAll(request: Request, response: Response) {
 
     const usersRepository = getCustomRepository(UsersRepository);
 
