@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 
 @Entity("users")
 class User {
-  
+
   @PrimaryColumn()
   readonly id: string;
 
@@ -14,10 +14,10 @@ class User {
   email: string;
 
   @CreateDateColumn()
-  created_at: Date;
+  readonly created_at: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  readonly updated_at: Date;
 
   constructor() {
     if (!this.id) {
