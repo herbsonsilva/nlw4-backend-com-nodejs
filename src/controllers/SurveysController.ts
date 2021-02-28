@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { getCustomRepository } from "typeorm";
 import { SurveysRepository } from "../repositories/SurveysRepository";
 
-class SurveyController {
+class SurveysController {
 
   async show(request: Request, response: Response) {
 
@@ -119,4 +119,4 @@ class SurveyController {
 
 };
 
-export { SurveyController };
+export { SurveysController };

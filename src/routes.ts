@@ -1,19 +1,23 @@
 import { Router } from 'express';
-import { SurveyController } from './controllers/SurveyController';
-import { UserController } from './controllers/UserController';
+import { SurveysController } from './controllers/SurveysController';
+import { SurveysUsersController } from './controllers/SurveysUsersController';
+import { UsersController } from './controllers/UsersController';
 
 const router = Router();
 
-const userController = new UserController();
-router.get('/users', userController.show);
-router.post('/users', userController.create);
-router.put('/users', userController.update);
-router.delete('/users', userController.delete);
+const usersController = new UsersController();
+router.get('/users', usersController.show);
+router.post('/users', usersController.create);
+router.put('/users', usersController.update);
+router.delete('/users', usersController.delete);
 
-const surveyController = new SurveyController();
-router.get('/surveys', surveyController.show);
-router.post('/surveys', surveyController.create);
-router.put('/surveys', surveyController.update);
-router.delete('/surveys', surveyController.delete);
+const surveysController = new SurveysController();
+router.get('/surveys', surveysController.show);
+router.post('/surveys', surveysController.create);
+router.put('/surveys', surveysController.update);
+router.delete('/surveys', surveysController.delete);
+
+const surveysUsersController = new SurveysUsersController();
+router.post('/surveyUsers', surveysUsersController.execute);
 
 export { router };
