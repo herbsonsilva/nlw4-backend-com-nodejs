@@ -4,15 +4,32 @@ import { SurveysRepository } from "../repositories/SurveysRepository";
 
 class SurveyController {
 
-  async listAll(request: Request, response: Response) {
+  async show(request: Request, response: Response) {
+
+    const { title } = request.body;
 
     const surveysRespository = getCustomRepository(SurveysRepository);
+
+    if (title) {
+
+      // SELECT * FROM surveys WHERE title = 'title';
+      const survey = await surveysRespository.findOne({
+        title
+      });
+
+      if (!survey) {
+        return response.status(400).json({
+          error: "Survey does not exists!"
+        });
+      }
+
+      return response.status(200).json(survey);
+    };
 
     // SELECT * FROM users;
     const surveys = await surveysRespository.find();
 
     return response.status(200).json(surveys);
-
   };
 
   async create(request: Request, response: Response) {
@@ -21,13 +38,14 @@ class SurveyController {
 
     const surveysRespository = getCustomRepository(SurveysRepository);
 
-    const surveyAlreadExists = await surveysRespository.findOne({
+    // SELECT * FROM surveys WHERE title = 'title';
+    const surveyAlreadyExists = await surveysRespository.findOne({
       title
     });
 
-    if (surveyAlreadExists) {
+    if (surveyAlreadyExists) {
       return response.status(400).json({
-        error: 'Survey alread exists!'
+        error: 'Survey already exists!'
       });
     };
 
@@ -40,13 +58,11 @@ class SurveyController {
     await surveysRespository.save(survey);
 
     return response.status(201).json(survey);
-
   };
 
   async update(request: Request, response: Response) {
 
-    const { id } = request.params;
-    const { title, description } = request.body;
+    const { id, title, description } = request.body;
 
     const surveysRespository = getCustomRepository(SurveysRepository);
 
@@ -76,12 +92,11 @@ class SurveyController {
     });
 
     return response.status(202).json(survey);
-
   };
 
   async delete(request: Request, response: Response) {
 
-    const { id } = request.params;
+    const { id } = request.body;
 
     const surveysRepository = getCustomRepository(SurveysRepository);
 
@@ -100,7 +115,6 @@ class SurveyController {
     });
 
     return response.status(204).json();
-
   }
 
 };

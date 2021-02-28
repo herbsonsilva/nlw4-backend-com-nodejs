@@ -1,18 +1,35 @@
 import { Request, Response } from 'express';
-import { getCustomRepository, ObjectID } from 'typeorm';
+import { getCustomRepository } from 'typeorm';
 import { UsersRepository } from '../repositories/UsersRepository';
 
 class UserController {
 
-  async listAll(request: Request, response: Response) {
+  async show(request: Request, response: Response) {
+
+    const { email } = request.body;
 
     const usersRepository = getCustomRepository(UsersRepository);
+
+    if (email) {
+
+      // SELECT * FROM users WHERE email = 'email';
+      const user = await usersRepository.findOne({
+        email
+      });
+
+      if (!user) {
+        return response.status(400).json({
+          error: "User does not exists!"
+        });
+      };
+
+      return response.status(200).json(user);
+    }
 
     // SELECT * FROM users;
     const users = await usersRepository.find();
 
     return response.status(200).json(users);
-
   };
 
   async create(request: Request, response: Response) {
@@ -22,13 +39,13 @@ class UserController {
     const usersRepository = getCustomRepository(UsersRepository);
 
     // SELECT * FROM users WHERE email = 'email';
-    const userAlreadExists = await usersRepository.findOne({
+    const userAlreadyExists = await usersRepository.findOne({
       email
     });
 
-    if (userAlreadExists) {
+    if (userAlreadyExists) {
       return response.status(400).json({
-        error: 'User alread exists!'
+        error: 'User already exists!'
       });
     };
 
@@ -41,13 +58,11 @@ class UserController {
     await usersRepository.save(user);
 
     response.status(201).json(user);
-
   };
 
   async update(request: Request, response: Response) {
 
-    const { id } = request.params;
-    const { name, email } = request.body;
+    const { id, name, email } = request.body;
 
     const usersRepository = getCustomRepository(UsersRepository);
 
@@ -78,12 +93,11 @@ class UserController {
     });
 
     response.status(202).json(user);
-
   };
 
   async delete(request: Request, response: Response) {
 
-    const { id } = request.params;
+    const { id } = request.body;
 
     const usersRepository = getCustomRepository(UsersRepository);
 
@@ -104,7 +118,6 @@ class UserController {
     });
 
     response.status(204).json();
-
   };
 
 };
