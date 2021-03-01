@@ -92,12 +92,14 @@ class SurveysUsersController {
     /**
      * Verificar se a pesquisa já cadastrada para o usuário
      */
-    const surveyUserAlreadyExists = surveysUsersRepository.findOne({
+    const surveyUserAlreadyExists = await surveysUsersRepository.findOne({
       user_id,
       survey_id
     })
 
-    if (!surveyUserAlreadyExists) {
+    console.log(surveyUserAlreadyExists);
+
+    if (surveyUserAlreadyExists) {
       return response.status(400).json({
         error: 'The survey already exists for this user!'
       })
@@ -106,7 +108,7 @@ class SurveysUsersController {
     /**
      * Salvar relacionamento na tabela surveys_users
      */
-    const surveyUser = surveysUsersRepository.create({
+    const surveyUser = await surveysUsersRepository.create({
       user_id,
       survey_id
     });

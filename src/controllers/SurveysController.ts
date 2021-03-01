@@ -8,12 +8,12 @@ class SurveysController {
 
     const { title } = request.body;
 
-    const surveysRespository = getCustomRepository(SurveysRepository);
+    const surveysRepository = getCustomRepository(SurveysRepository);
 
     if (title) {
 
       // SELECT * FROM surveys WHERE title = 'title';
-      const survey = await surveysRespository.findOne({
+      const survey = await surveysRepository.findOne({
         title
       });
 
@@ -27,7 +27,7 @@ class SurveysController {
     };
 
     // SELECT * FROM users;
-    const surveys = await surveysRespository.find();
+    const surveys = await surveysRepository.find();
 
     return response.status(200).json(surveys);
   };
@@ -36,10 +36,10 @@ class SurveysController {
 
     const { title, description } = request.body;
 
-    const surveysRespository = getCustomRepository(SurveysRepository);
+    const surveysRepository = getCustomRepository(SurveysRepository);
 
     // SELECT * FROM surveys WHERE title = 'title';
-    const surveyAlreadyExists = await surveysRespository.findOne({
+    const surveyAlreadyExists = await surveysRepository.findOne({
       title
     });
 
@@ -50,12 +50,12 @@ class SurveysController {
     };
 
     // INSERT INTO surveys (column, column) VALUES ('value', 'value')
-    const survey = await surveysRespository.create({
+    const survey = await surveysRepository.create({
       title,
       description
     });
 
-    await surveysRespository.save(survey);
+    await surveysRepository.save(survey);
 
     return response.status(201).json(survey);
   };
@@ -64,9 +64,9 @@ class SurveysController {
 
     const { id, title, description } = request.body;
 
-    const surveysRespository = getCustomRepository(SurveysRepository);
+    const surveysRepository = getCustomRepository(SurveysRepository);
 
-    let survey = await surveysRespository.findOne({
+    let survey = await surveysRepository.findOne({
       id
     });
 
@@ -77,7 +77,7 @@ class SurveysController {
     };
 
     // UPDATE users SET column = 'value', ..., updated_at = CURRENT_TIMESTAMP WHERE id = 'id'
-    await surveysRespository.update(
+    await surveysRepository.update(
       {
         id
       },
@@ -87,7 +87,7 @@ class SurveysController {
       }
     );
 
-    survey = await surveysRespository.findOne({
+    survey = await surveysRepository.findOne({
       id
     });
 
