@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
-import { getCustomRepository, RepositoryNotFoundError } from "typeorm";
+import path from 'path';
+import { getCustomRepository } from "typeorm";
 import { SurveysRepository } from "../repositories/SurveysRepository";
 import { SurveysUsersRepository } from "../repositories/SurveysUsersRepository";
 import { UsersRepository } from "../repositories/UsersRepository";
 import SendMailService from "../services/SendMailService";
+
 
 class SurveysUsersController {
 
@@ -115,13 +117,53 @@ class SurveysUsersController {
 
     await surveysUsersRepository.save(surveyUser);
 
+    const npsPath = path.resolve(
+      __dirname,
+      '..',
+      'views',
+      'emails',
+      'npsMail.hbs'
+    );
+
+    const from = "NPS <noreply@nps.com>";
+
+    const variables = {
+      name: user.name,
+      title: survey.title,
+      description: survey.description
+    }
+
     /**
      * Enviar email com a pesquisa para o usuário
      */
-    await SendMailService.execute(user.email, survey.title, survey.description);
+    await SendMailService.execute(from, user.email, survey.title, variables, npsPath);
 
     return response.status(201).json(surveyUser);
 
+  };
+
+  async delete(request: Request, response: Response) {
+    const { user_id, survey_id } = request.body;
+
+    const surveysUsersRepository = getCustomRepository(SurveysUsersRepository);
+
+    const surveyUser = await surveysUsersRepository.findOne({
+      user_id,
+      survey_id
+    });
+
+    if (!surveyUser) {
+      return response.status(400).json({
+        error: 'This survey does not exists for this user!'
+      });
+    }
+
+    await surveysUsersRepository.delete({
+      user_id,
+      survey_id
+    });
+
+    return response.status(204).json();
   };
 
 };

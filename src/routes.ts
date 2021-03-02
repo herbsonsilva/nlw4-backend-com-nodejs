@@ -20,5 +20,7 @@ router.delete('/surveys', surveysController.delete);
 const surveysUsersController = new SurveysUsersController();
 router.get('/surveysUsers', surveysUsersController.show);
 router.post('/surveysUsers', surveysUsersController.create);
+// router.put('/surveysUsers', surveysUsersController.update);
+router.delete('/surveysUsers', surveysUsersController.delete);
 
 export { router };
